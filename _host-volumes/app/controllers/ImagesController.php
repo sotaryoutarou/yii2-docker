@@ -6,9 +6,9 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\forms\ImageUploadForm;
 
 class ImagesController extends Controller
 {
@@ -55,12 +55,34 @@ class ImagesController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Displays upload form.
      *
      * @return string
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new ImageUploadForm();
+        return $this->render('index', ['model' => $model]);
+    }
+
+    /**
+     * recieve image file.
+     *
+     * @return string
+     */
+    public function actionUpload()
+    {
+        $model = new ImageUploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->picture = $_FILES['picture'];
+            if ($model->validate()) {
+                // ファイルのアップロードが成功
+                exit('aaaaaaaa');
+            }
+        }
+        exit('vvvvvvvvvv');
+
+        return $this->render('upload', ['model' => $model]);
     }
 }
